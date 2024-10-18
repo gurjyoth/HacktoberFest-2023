@@ -1,16 +1,35 @@
 # Contributed by: 
-Name: Abhijai Rajawat
-University: VIT, Vellore
+# Name: Abhijai Rajawat
+# University: VIT, Vellore
 
 # Problem Statement:
-Write a python program to convert celsius To Fahrenheit by taking input from user
+# Write a Python program to convert Celsius to Fahrenheit by taking input from the user.
 
-# Problem Solution:
-# Get the temperature in Celsius from the user
-celsius = float(input("Enter the temperature in Celsius: "))
+# Function to convert Celsius to Fahrenheit
+def convert_celsius_to_fahrenheit(celsius):
+    # Formula to convert Celsius to Fahrenheit
+    fahrenheit = (celsius * 9 / 5) + 32
+    return fahrenheit
 
-# Convert Celsius to Fahrenheit
-fahrenheit = (celsius * 9/5) + 32
+# Main function to execute the program
+def main():
+    # Prompt the user to enter the temperature in Celsius
+    celsius_input = input("Enter the temperature in Celsius: ")
+    
+    try:
+        # Convert the input to a float
+        celsius = float(celsius_input)
+        
+        # Call the conversion function
+        fahrenheit = convert_celsius_to_fahrenheit(celsius)
+        
+        # Display the result in a formatted string
+        print(f"{celsius:.2f} degrees Celsius is equal to {fahrenheit:.2f} degrees Fahrenheit.")
+    
+    except ValueError:
+        # Handle the case where the input is not a valid number
+        print("Please enter a valid number for the temperature in Celsius.")
 
-# Display the result
-print(f"{celsius} degrees Celsius is equal to {fahrenheit} degrees Fahrenheit.")
+# Execute the main function
+if __name__ == "__main__":
+    main()
