@@ -1,117 +1,126 @@
 #include <iostream>
-#define SIZE 5 /* Size of Circular Queue */
-
 using namespace std;
 
-class Queue {
-   private:
-  int items[SIZE], front, rear;
+class CircularQueue {
+private:
+    int *items;  // Dynamic array for queue items
+    int front, rear, capacity;
 
-   public:
-  Queue() {
-    front = -1;
-    rear = -1;
-  }
-  // Check if the queue is full
-  bool isFull() {
-    if (front == 0 && rear == SIZE - 1) {
-      return true;
-    }
-    if (front == rear + 1) {
-      return true;
-    }
-    return false;
-  }
-  // Check if the queue is empty
-  bool isEmpty() {
-    if (front == -1)
-      return true;
-    else
-      return false;
-  }
-  // Adding an element
-  void enQueue(int element) {
-    if (isFull()) {
-      cout << "Queue is full";
-    } else {
-      if (front == -1) front = 0;
-      rear = (rear + 1) % SIZE;
-      items[rear] = element;
-      cout << endl
-         << "Inserted " << element << endl;
-    }
-  }
-  // Removing an element
-  int deQueue() {
-    int element;
-    if (isEmpty()) {
-      cout << "Queue is empty" << endl;
-      return (-1);
-    } else {
-      element = items[front];
-      if (front == rear) {
+public:
+    CircularQueue(int size) {
+        capacity = size;
+        items = new int[capacity];
         front = -1;
         rear = -1;
-      }
-      // Q has only one element,
-      // so we reset the queue after deleting it.
-      else {
-        front = (front + 1) % SIZE;
-      }
-      return (element);
     }
-  }
 
-  void display() {
-    // Function to display status of Circular Queue
-    int i;
-    if (isEmpty()) {
-      cout << endl
-         << "Empty Queue" << endl;
-    } else {
-      cout << "Front -> " << front;
-      cout << endl
-         << "Items -> ";
-      for (i = front; i != rear; i = (i + 1) % SIZE)
-        cout << items[i];
-      cout << items[i];
-      cout << endl
-         << "Rear -> " << rear;
+    ~CircularQueue() {
+        delete[] items;  // Free allocated memory
     }
-  }
+
+    // Check if the queue is full
+    bool isFull() {
+        return (front == 0 && rear == capacity - 1) || (front == rear + 1);
+    }
+
+    // Check if the queue is empty
+    bool isEmpty() {
+        return front == -1;
+    }
+
+    // Adding an element
+    void enQueue(int element) {
+        if (isFull()) {
+            cout << "Queue is full, cannot enqueue " << element << endl;
+            return;
+        }
+        if (front == -1) front = 0;  // First element being added
+        rear = (rear + 1) % capacity;
+        items[rear] = element;
+        cout << "Inserted " << element << endl;
+    }
+
+    // Removing an element
+    int deQueue() {
+        if (isEmpty()) {
+            cout << "Queue is empty, cannot dequeue" << endl;
+            return -1;  // Indicate failure
+        }
+        int element = items[front];
+        if (front == rear) {  // Queue has only one element
+            front = -1;
+            rear = -1;
+        } else {
+            front = (front + 1) % capacity;
+        }
+        return element;
+    }
+
+    // Displaying the queue
+    void display() {
+        if (isEmpty()) {
+            cout << "Empty Queue" << endl;
+            return;
+        }
+        cout << "Front -> " << front << endl;
+        cout << "Items -> ";
+        for (int i = front; i != rear; i = (i + 1) % capacity) {
+            cout << items[i] << " ";
+        }
+        cout << items[rear] << endl;  // Print the last item
+        cout << "Rear -> " << rear << endl;
+    }
+
+    // Get the size of the queue
+    int size() {
+        if (isEmpty()) return 0;
+        return (rear - front + capacity) % capacity + 1;
+    }
 };
 
 int main() {
-  Queue q;
+    int size;
+    cout << "Enter the size of the Circular Queue: ";
+    cin >> size;
 
-  // Fails because front = -1
-  q.deQueue();
+    CircularQueue q(size);
+    int choice, element;
 
-  q.enQueue(1);
-  q.enQueue(2);
-  q.enQueue(3);
-  q.enQueue(4);
-  q.enQueue(5);
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Enqueue\n";
+        cout << "2. Dequeue\n";
+        cout << "3. Display\n";
+        cout << "4. Check Size\n";
+        cout << "5. Exit\n";
+        cout << "Choose an option: ";
+        cin >> choice;
 
-  // Fails to enqueue because front == 0 && rear == SIZE - 1
-  q.enQueue(6);
+        switch (choice) {
+            case 1:
+                cout << "Enter element to enqueue: ";
+                cin >> element;
+                q.enQueue(element);
+                break;
+            case 2:
+                element = q.deQueue();
+                if (element != -1) {
+                    cout << "Deleted Element is " << element << endl;
+                }
+                break;
+            case 3:
+                q.display();
+                break;
+            case 4:
+                cout << "Current size of the queue: " << q.size() << endl;
+                break;
+            case 5:
+                cout << "Exiting..." << endl;
+                break;
+            default:
+                cout << "Invalid option. Please try again." << endl;
+        }
+    } while (choice != 5);
 
-  q.display();
-
-  int elem = q.deQueue();
-
-  if (elem != -1)
-    cout << endl
-       << "Deleted Element is " << elem;
-
-  q.display();
-
-  q.enQueue(7);
-
-  q.display();
-
-  // Fails to enqueue because front == rear + 1
-  q.enQueue(8);
-
-  return 0;
+    return 0;
 }
