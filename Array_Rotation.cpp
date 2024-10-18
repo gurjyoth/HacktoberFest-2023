@@ -1,64 +1,72 @@
 #include <iostream>
-using namespace std;
-void once_rotation(float arr[], int no_elements)
-{
-    int flag = arr[0];
-    for (int i = 0; i < no_elements - 1; i++)
-    {
+#include <stdexcept>
+
+// Function to perform a single rotation on the array
+void rotateOnce(float arr[], int size) {
+    if (size <= 0) {
+        throw std::invalid_argument("Array size must be positive.");
+    }
+
+    float temp = arr[0];
+    for (int i = 0; i < size - 1; i++) {
         arr[i] = arr[i + 1];
     }
-
-    arr[no_elements - 1] = flag;
+    arr[size - 1] = temp;
 }
-float rotate_array(float arr[], int no_elements, int no_rotations)
-{
-    float flag = 0;
-    if (no_elements == 0)
-    {
-        cout << "Empty Array" << endl;
-    }
-    else if (no_elements > 100)
-    {
-        cout << "Out of Bound" << endl;
-    }
-    else
-    {
-        for (int j = 0; j < no_rotations; j++)
-        {
-            once_rotation(arr, no_elements);
-        }
 
-        cout << "Final array after rotation is : ";
-
-        for (int j = 0; j <= no_elements - 1; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << endl;
+// Function to rotate the array by a specified number of positions
+void rotateArray(float arr[], int size, int rotations) {
+    if (size <= 0) {
+        throw std::invalid_argument("Array size must be positive.");
+    }
+    if (rotations < 0) {
+        throw std::invalid_argument("Number of rotations must be non-negative.");
     }
 
-    return 0;
+    rotations = rotations % size; // Handle cases where rotations > size
+
+    for (int i = 0; i < rotations; i++) {
+        rotateOnce(arr, size);
+    }
 }
-int main()
-{
-    float arr[100];
-    int no_rotations, no_elements;
-    cout << "Enter the number of elements in an array: ";
-    cin >> no_elements;
 
-    if (no_elements > 0 && no_elements <= 100)
-    {
-        cout << "Enter the value of elements : ";
-        for (int i = 0; i < no_elements; i++)
-        {
-            cin >> arr[i];
-        }
-        cout << "Enter the number of rotations : ";
-        cin >> no_rotations;
+// Function to print the array
+void printArray(float arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    const int MAX_SIZE = 100;
+    float arr[MAX_SIZE];
+    int size, rotations;
+
+    std::cout << "Enter the number of elements in the array (1-" << MAX_SIZE << "): ";
+    std::cin >> size;
+
+    if (size <= 0 || size > MAX_SIZE) {
+        std::cerr << "Invalid array size." << std::endl;
+        return 1;
     }
 
-    rotate_array(arr, no_elements, no_rotations);
-    cout << endl;
-    
+    std::cout << "Enter the values of the elements: ";
+    for (int i = 0; i < size; i++) {
+        std::cin >> arr[i];
+    }
+
+    std::cout << "Enter the number of rotations: ";
+    std::cin >> rotations;
+
+    try {
+        rotateArray(arr, size, rotations);
+        std::cout << "Final array after rotation: ";
+        printArray(arr, size);
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+
     return 0;
 }
