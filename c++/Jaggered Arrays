@@ -1,21 +1,46 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
 int main() {
     int row;
-    cin>>row;
-    int col;
-    
-    int sizes[1000];
-    int** arr=new int *[row];
-    for(int i=0;i<row;i++){
-        cout<<"enter the size of subarray"<<endl;
-        cin>>col;
-        sizes[i]=col;
-        arr[i]=new int [sizes[i]];
-    }
-    for(int i=0;i<row;i++){
-        
-        for(int j=0;j<sizes[i];j++){
-            cin>>arr[i][j];
+    cout << "Enter the number of subarrays: ";
+    cin >> row;
+
+    // Array to hold the sizes of each subarray
+    int* sizes = new int[row]; // Dynamic allocation for sizes
+    int** arr = new int*[row];  // Dynamic allocation for the array of pointers
+
+    // Input for each subarray size and its elements
+    for (int i = 0; i < row; i++) {
+        cout << "Enter the size of subarray " << i + 1 << ": ";
+        cin >> sizes[i];
+
+        // Allocate memory for the subarray
+        arr[i] = new int[sizes[i]];
+
+        cout << "Enter elements for subarray " << i + 1 << ": ";
+        for (int j = 0; j < sizes[i]; j++) {
+            cin >> arr[i][j];
         }
+    }
+
+    // Display the entered subarrays
+    cout << "\nYou entered the following subarrays:\n";
+    for (int i = 0; i < row; i++) {
+        cout << "Subarray " << i + 1 << ": ";
+        for (int j = 0; j < sizes[i]; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // Cleanup: Free allocated memory
+    for (int i = 0; i < row; i++) {
+        delete[] arr[i]; // Free each subarray
+    }
+    delete[] arr; // Free the array of pointers
+    delete[] sizes; // Free the sizes array
+
+    return 0;
+}
