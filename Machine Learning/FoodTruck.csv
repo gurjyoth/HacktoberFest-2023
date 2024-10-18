@@ -1,3 +1,13 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Load the dataset
+data = """
 city_population,food_truck_profit
 6.1101,17.592
 5.5277,9.1302
@@ -86,13 +96,4 @@ city_population,food_truck_profit
 6.5159,5.3436
 8.5172,4.2415
 9.1802,6.7981
-6.002000000000001,0.92695
-5.5204,0.152
-5.0594,2.8214
-5.7077,1.8451
-7.6366,4.2959
-5.8707,7.2029
-5.3054,1.9869
-8.2934,0.14454
-13.394,9.0551
-5.4369,0.61705
+6.002000000000001,0.
