@@ -27,10 +27,22 @@ def password_generator(password_lengths):
     # Return the list of generated passwords
     return passwords_list
 
+# Function to get a valid integer input from the user
+def get_valid_integer(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+            if value <= 0:
+                print("Please enter a positive integer.")
+            else:
+                return value
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
+
 # Main function to execute the program
 def main():
     # Prompt the user to enter the number of passwords to generate
-    num_passwords = int(input("Enter the number of passwords to generate: "))
+    num_passwords = get_valid_integer("Enter the number of passwords to generate: ")
     
     # Print a message to indicate that password generation is in progress
     print(f"Generating {num_passwords} passwords...")
@@ -45,7 +57,7 @@ def main():
         print("Note: Minimum length of password is 6!")
         
         # Get the password length from the user and ensure it's at least 6
-        length = int(input())
+        length = get_valid_integer("Enter the length: ")
         if length < 6:
             print("Password length must be at least 6. Using 6 as the length.")
             length = 6
